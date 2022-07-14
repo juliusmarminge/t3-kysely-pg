@@ -5,20 +5,32 @@ import type {
   VerificationToken,
 } from "next-auth/adapters";
 import type { Account } from "next-auth";
-import { Kysely } from "kysely";
+import { Kysely, KyselyConfig } from "kysely";
 
 // This is the minimal model required
-export interface MinimalDB {
+export interface MinModel {
   user: AdapterUser;
   account: Account;
   verificationToken: VerificationToken;
   session: AdapterSession;
 }
 
-export default function KyselyAdapter<
-  TModel extends MinimalDB,
-  DB extends Kysely<TModel>
->(db: DB, options = {}): Adapter {
+/**
+ * Wrapper over the original Kysely class in order to validate
+ * the passed db-model. It is not required, and a regular Kysely
+ * instance can be used instead. But by wrapping it, we get type-errors
+ * if the model does not implement the necessary fields.
+ **/
+export class AuthedKysely<TModel extends MinModel> extends Kysely<TModel> {
+  constructor(config: KyselyConfig) {
+    super(config);
+  }
+}
+
+export default function KyselyAdapter<AuthedKysely>(
+  db: AuthedKysely | Kysely<any>,
+  options = {}
+): Adapter {
   return {
     /*createUser: async (user) => {
       const created = await db

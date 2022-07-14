@@ -1,7 +1,8 @@
 import { env } from "./env";
 
 import { Pool } from "pg";
-import { Kysely, PostgresDialect, Generated } from "kysely";
+import { PostgresDialect, Generated } from "kysely";
+import { AuthedKysely } from "../adapter/kysely-adapter";
 
 interface UserTable {
   id: Generated<string>;
@@ -14,13 +15,13 @@ interface VerificationTokenTable {}
 
 interface SessionTable {}
 
-interface Database {
+export interface Database {
   user: UserTable;
   account: AccountTable;
   verificationToken: VerificationTokenTable;
-  //session: SessionTable;
+  session: SessionTable;
 }
-export const db = new Kysely<Database>({
+export const db = new AuthedKysely<Database>({
   dialect: new PostgresDialect({
     pool: new Pool({
       connectionString: env.DATABASE_URL,
