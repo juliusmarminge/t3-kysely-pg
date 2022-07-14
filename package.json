@@ -10,16 +10,16 @@
   },
   "dependencies": {
     "kysely": "^0.19.10",
-    "mysql2": "^2.3.3",
     "next": "12.2.1",
     "next-auth": "^4.10.0",
+    "pg": "^8.7.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "zod": "^3.17.3"
   },
   "devDependencies": {
-    "@types/mysql": "^2.15.21",
     "@types/node": "18.0.0",
+    "@types/pg": "^8.6.5",
     "@types/react": "18.0.14",
     "@types/react-dom": "18.0.5",
     "autoprefixer": "^10.4.7",

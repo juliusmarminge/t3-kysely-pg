@@ -9,19 +9,26 @@ import { Kysely } from "kysely";
 
 // This is the minimal model required
 export interface MinimalDB {
-  User: AdapterUser;
-  Account: Account;
-  VerificationToken: VerificationToken;
-  Session: AdapterSession;
+  user: AdapterUser;
+  account: Account;
+  verificationToken: VerificationToken;
+  session: AdapterSession;
 }
 
-export default function KyselyAdapter<DB extends MinimalDB>(
-  client: Kysely<DB>,
-  options = {}
-): Adapter {
+export default function KyselyAdapter<
+  TModel extends MinimalDB,
+  DB extends Kysely<TModel>
+>(db: DB, options = {}): Adapter {
   return {
-    async createUser(user) {
-      //const { id } = await client.insertInto("User").values({})
+    /*createUser: async (user) => {
+      const created = await db
+        .insertInto("user")
+        .values(user)
+        .returning("id")
+        .executeTakeFirstOrThrow();
+      return created.id;
+    },*/
+    async createUser() {
       return {} as AdapterUser;
     },
     async getUser(id) {
